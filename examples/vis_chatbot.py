@@ -8,11 +8,12 @@ from dataclasses import dataclass, field
 import logging
 import json
 import numpy as np
-import requests
 from PIL import Image
 import os
 import os.path as osp
 import sys
+from security import safe_requests
+
 sys.path.remove(os.path.abspath(os.path.dirname(sys.argv[0])))
 import time
 from typing import Optional
@@ -155,7 +156,7 @@ def main():
         raw_image = Image.open(chatbot_args.image_path)
     else:
         img_url = 'https://storage.googleapis.com/sfr-vision-language-research/BLIP/demo.jpg'
-        raw_image = Image.open(requests.get(img_url, stream=True).raw).convert('RGB')
+        raw_image = Image.open(safe_requests.get(img_url, stream=True).raw).convert('RGB')
     base_size = raw_image.size
     image_list.append(np.array(raw_image))
     input_text = chatbot_args.input_text
