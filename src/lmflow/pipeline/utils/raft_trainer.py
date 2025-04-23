@@ -4,7 +4,6 @@ import glob
 import inspect
 import math
 import os
-import random
 import re
 import shutil
 import sys
@@ -16,6 +15,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple, Union
 
 from tqdm.auto import tqdm
+import secrets
 
 
 # Integrations must be imported before ML frameworks:
@@ -2276,7 +2276,7 @@ class RaftTrainer:
                 return
 
         checkpoint_rng_state = torch.load(rng_file)
-        random.setstate(checkpoint_rng_state["python"])
+        secrets.SystemRandom().setstate(checkpoint_rng_state["python"])
         np.random.set_state(checkpoint_rng_state["numpy"])
         torch.random.set_rng_state(checkpoint_rng_state["cpu"])
         if torch.cuda.is_available():
@@ -2372,7 +2372,7 @@ class RaftTrainer:
 
         # Save RNG state in non-distributed training
         rng_states = {
-            "python": random.getstate(),
+            "python": secrets.SystemRandom().getstate(),
             "numpy": np.random.get_state(),
             "cpu": torch.random.get_rng_state(),
         }

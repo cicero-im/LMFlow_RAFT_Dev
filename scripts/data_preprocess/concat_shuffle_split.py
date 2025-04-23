@@ -13,8 +13,8 @@ import json
 import textwrap
 import sys
 import os 
-import random
 import gc
+import secrets
 
 def parse_argument(sys_argv):
     """Parses arguments from command line.
@@ -93,8 +93,8 @@ def main():
     print('finish concat')
 
     # shuffle 
-    random.seed(args.seed)
-    random.shuffle(data_dict["instances"])
+    secrets.SystemRandom().seed(args.seed)
+    secrets.SystemRandom().shuffle(data_dict["instances"])
     print('finish shuffle')
     # split to train, eval, test
     train_data_dict = {"type":data_dict["type"],"instances":data_dict["instances"][args.eval_size:-args.test_size]}

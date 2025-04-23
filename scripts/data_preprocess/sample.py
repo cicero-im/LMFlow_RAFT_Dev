@@ -8,9 +8,9 @@ from __future__ import absolute_import
 
 import argparse
 import json
-import random
 import sys
 import textwrap
+import secrets
 
 def parse_argument(sys_argv):
     """Parses arguments from command line.
@@ -62,11 +62,11 @@ def main():
     else:
         data_dict = json.load(sys.stdin)
 
-    random.seed(args.seed)
+    secrets.SystemRandom().seed(args.seed)
     num_instances = len(data_dict["instances"])
     num_sample = int(num_instances * args.ratio)
 
-    data_dict["instances"] = random.sample(data_dict["instances"], num_sample)
+    data_dict["instances"] = secrets.SystemRandom().sample(data_dict["instances"], num_sample)
 
     if args.output_path is not None:
         with open(args.output_path, "w") as fout:

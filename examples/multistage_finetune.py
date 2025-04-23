@@ -11,10 +11,11 @@ be totally 4*3 stages, and the learning rate schedule will restart every stage.
 """
 
 import logging
-import random
 import sys
 import os
 import gc
+import secrets
+
 sys.path.remove(os.path.abspath(os.path.dirname(sys.argv[0])))
 
 from dataclasses import dataclass, field
@@ -71,8 +72,8 @@ def generate_new_seed(seed):
 def shuffle_and_split_data(dataset, num_split=None, seed=None):
     data_dict = dataset.to_dict()
 
-    random.seed(seed)
-    random.shuffle(data_dict["instances"])
+    secrets.SystemRandom().seed(seed)
+    secrets.SystemRandom().shuffle(data_dict["instances"])
 
     dataset_list = []
     for i in range(num_split):
