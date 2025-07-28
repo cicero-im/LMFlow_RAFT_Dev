@@ -1,12 +1,12 @@
 """The program includes several functions: setting a random seed, 
 loading data from a JSON file, batching data, and extracting answers from generated text.
 """
-
-import random
 import numpy as np
 import torch
 import json
 import re
+import secrets
+
 def set_random_seed(seed: int):
     """
     Set the random seed for `random`, `numpy`, `torch`, `torch.cuda`.
@@ -17,7 +17,7 @@ def set_random_seed(seed: int):
         The default seed.
         
     """
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     if torch.cuda.is_available():
@@ -78,7 +78,7 @@ def batchlize(examples: list, batch_size: int, random_shuffle: bool):
     dataloader = []
     length = len(examples)
     if (random_shuffle):
-        random.shuffle(examples)
+        secrets.SystemRandom().shuffle(examples)
     while size < length:
         if length - size > batch_size:
             dataloader.append(examples[size : size+batch_size])

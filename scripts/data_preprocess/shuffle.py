@@ -8,9 +8,9 @@ from __future__ import absolute_import
 
 import argparse
 import json
-import random
 import sys
 import textwrap
+import secrets
 
 def parse_argument(sys_argv):
     """Parses arguments from command line.
@@ -58,8 +58,8 @@ def main():
     else:
         data_dict = json.load(sys.stdin)
 
-    random.seed(args.seed)
-    random.shuffle(data_dict["instances"])
+    secrets.SystemRandom().seed(args.seed)
+    secrets.SystemRandom().shuffle(data_dict["instances"])
 
     if args.output_path is not None:
         with open(args.output_path, "w") as fout:
